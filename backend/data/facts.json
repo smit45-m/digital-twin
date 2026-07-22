@@ -1,0 +1,21 @@
+{
+  "full_name": "Smit Pathak",
+  "name": "Smit",
+  "current_role": "AI Engineer",
+  "location": "gujarat",
+  "email": "smitpathak999@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/smit-pathak-78388b263/",
+  "specialties": [
+    "RAG",
+    "AI ENGINEERING",
+    "DATA SCIENCE"
+  ],
+  "years_experience": 0,
+  "education": [
+    {
+      "degree": "BTECH IN ARTIFICIAL INTELLIGENCE",
+      "institution": "NIT ROURKELA",
+      "year": "2024-2028"
+    }
+  ]
+}
