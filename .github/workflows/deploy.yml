@@ -74,7 +74,18 @@ jobs:
         id: deploy_outputs
         working-directory: ./terraform
         run: |
-          terraform workspace select ${{ github.event.inputs.environment || 'dev' }}
+          AWS_ACCOUNT_ID=508563139113
+          AWS_REGION=us-east-1
+          ENV="${{ github.event.inputs.environment || 'dev' }}"
+          
+          terraform init -input=false \
+            -backend-config="bucket=twin-terraform-state-${AWS_ACCOUNT_ID}" \
+            -backend-config="key=${ENV}/terraform.tfstate" \
+            -backend-config="region=${AWS_REGION}" \
+            -backend-config="dynamodb_table=twin-terraform-locks" \
+            -backend-config="encrypt=true"
+            
+          terraform workspace select "$ENV"
           echo "cloudfront_url=$(terraform output -raw cloudfront_url)" >> $GITHUB_OUTPUT
           echo "api_url=$(terraform output -raw api_gateway_url)" >> $GITHUB_OUTPUT
           echo "frontend_bucket=$(terraform output -raw s3_frontend_bucket)" >> $GITHUB_OUTPUT

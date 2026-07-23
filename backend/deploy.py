@@ -39,11 +39,12 @@ def main():
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
         print("[WARNING] Docker is not running or not installed. Falling back to local pip installation...")
         # Use pip to download Linux-compatible packages for Lambda
-        # We need to find a working pip - try conda's pip first, then system pip
         import sys
         pip_commands = [
-            # Try conda base pip (known to work on this system)
-            [os.path.join(os.environ.get("CONDA_PREFIX", ""), "python.exe"), "-m", "pip"],
+            # Try current python interpreter first (sys.executable)
+            [sys.executable, "-m", "pip"],
+            # Try python3
+            ["python3", "-m", "pip"],
             # Try system python
             ["python", "-m", "pip"],
             # Try pip directly
