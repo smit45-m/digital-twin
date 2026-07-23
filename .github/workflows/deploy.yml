@@ -33,7 +33,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::508563139113:role/github-actions-twin-deploy
-          role-session-name: github-actions-deploy
+          role-session-name: gha-${{ github.run_id }}-${{ github.run_attempt }}
           aws-region: us-east-1
 
       - name: Set up Python
