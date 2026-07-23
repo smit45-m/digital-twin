@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN || 'arn:aws:iam::508563139113:role/github-actions-twin-deploy' }}
           role-session-name: github-actions-deploy
           aws-region: ${{ secrets.DEFAULT_AWS_REGION || secrets.AWS_REGION || 'us-east-1' }}
 
@@ -54,21 +54,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
       - name: Run Deployment Script
         run: |
           # Set environment variables for the script
-          export AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
+          export AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID || '508563139113' }}
           export DEFAULT_AWS_REGION=${{ secrets.DEFAULT_AWS_REGION || 'us-east-1' }}
           
           # Make script executable and run it
           chmod +x scripts/deploy.sh
           ./scripts/deploy.sh ${{ github.event.inputs.environment || 'dev' }}
         env:
-          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN || 'arn:aws:iam::508563139113:role/github-actions-twin-deploy' }}
           
       - name: Get Deployment URLs
         id: deploy_outputs
